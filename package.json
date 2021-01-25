@@ -6,7 +6,7 @@
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
-    "bootstrap": "^4.5.3",
+    "bootstrap": "^4.6.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^17.0.1",
@@ -15,6 +15,7 @@
     "react-spring": "^8.0.27",
     "react-uuid": "^1.0.2",
     "styled-components": "^5.2.1",
+    "time-events-manager": "^0.1.1",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
