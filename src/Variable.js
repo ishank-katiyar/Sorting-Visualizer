@@ -1,38 +1,94 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useCallback, createContext, useRef } from "react";
+import { useEffect } from "react";
+import timeoutCollection from "time-events-manager";
 
-function rnd() {
-	console.assert(
-		arguments[1] >= arguments[0],
-		"First arguments should be less or equal to than second argument in Rnd function"
-	);
-	return (
-		arguments[0] + Math.floor(Math.random() * (arguments[1] - arguments[0]) + 1)
-	);
+function rnd(A, B) {
+	return A + Math.floor(Math.random() * (B - A) + 1);
 }
 
-function Get_Bar_Count() {
-	console.assert(
-		arguments.length === 1,
-		"Incorrect signatres for Get_Bar_Count"
-	);
+function randomArray(ArraySize, MaxHeight) {
+	const array = [];
+	for (let i = 0; i < ArraySize; i++) {
+		array.push(rnd(10, MaxHeight));
+	}
+	return array;
+}
 
-	let Min_Width = 15;
-	let Max_Bar_Count = Math.ceil(arguments[0] / Min_Width);
+function arraySize(Width) {
+	const MinWidth = 15;
+	const MaxBarCount = Math.ceil(Width / MinWidth);
 
-	console.assert(Max_Bar_Count >= 5, { Max_Bar_Count: Max_Bar_Count });
+	console.assert(MaxBarCount >= 5, { Max_Bar_Count: MaxBarCount });
 
 	// return rnd(5, Max_Bar_Count);
 	// return 10;
-	return Max_Bar_Count;
+	return MaxBarCount;
 }
 
-export const VariableContext = createContext();
+export const ArgumentContext = createContext();
 
-export const arrayOfHeightsProvider = (props) => {
+export const ArgumentProvider = (props) => {
 	const [arrayOfHeights, setarrayOfHeights] = useState([]);
+	const [ContainerHeight, setContainerHeight] = useState(
+		window.innerHeight - 240
+	);
+	const [IsSorting, setIsSorting] = useState(false);
+	const componenetRef = useRef(null);
+
+	const updatearrayOfHeights = useCallback(
+		(...parameter) => {
+			if (parameter.length === 1 && Array.isArray(parameter[0])) {
+				setarrayOfHeights(parameter[0]);
+				return;
+			}
+			timeoutCollection.timeoutCollection.removeAll();
+			setarrayOfHeights(
+				randomArray(
+					arraySize(componenetRef.current.offsetWidth),
+					ContainerHeight
+				)
+			);
+		},
+		[ContainerHeight]
+	);
+
+	useEffect(() => {
+		updatearrayOfHeights();
+		setContainerHeight(window.innerHeight - 240);
+
+		const handleResize = () => {
+			setContainerHeight(window.innerHeight - 240);
+			updatearrayOfHeights();
+		};
+
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, [
+		ContainerHeight,
+		updatearrayOfHeights,
+		setContainerHeight,
+		componenetRef
+	]);
+
+	const value = {
+		arrayOfHeights,
+		setarrayOfHeights,
+		updatearrayOfHeights,
+		ContainerHeight,
+		setContainerHeight,
+		IsSorting,
+		setIsSorting,
+		componenetRef
+	};
+
 	return (
-		<VariableContext.Provider value={[arrayOfHeights, setarrayOfHeights]}>
-			{props.childer}
-		</VariableContext.Provider>
+		<ArgumentContext.Provider value={value}>
+			{props.children}
+		</ArgumentContext.Provider>
 	);
 };
+
+// export useArgumentContext = () => useContext(ArgumentContext);

@@ -1,12 +1,13 @@
 import React from "react";
 import SortingVisulizer from "./SortingVisualizer";
+import { ArgumentProvider } from "./Variable";
 
 function App() {
-    return (
-        <div>
-            <SortingVisulizer />
-        </div>
-    );
+	return (
+		<ArgumentProvider>
+			<SortingVisulizer />
+		</ArgumentProvider>
+	);
 }
 
 export default App;

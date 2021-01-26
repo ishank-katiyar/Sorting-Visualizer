@@ -1,14 +1,14 @@
-import timeoutCollection from "time-events-manager";
+// import timeoutCollection from "time-events-manager";
 
 let heights = [];
 let funct = () => {};
 let Ind = 0;
 
-const Merge = (StartIndex, EndIndex, MidIndex) => {
+const merge = (StartIndex, EndIndex, MidIndex) => {
 	let I = StartIndex;
 	let J = MidIndex + 1;
-	let Len = EndIndex - StartIndex + 1;
-	let AuxilaryArray = [];
+	const Len = EndIndex - StartIndex + 1;
+	const AuxilaryArray = [];
 	for (let i = 0; i < Len; i++) {
 		if (I <= MidIndex && J <= EndIndex) {
 			let MN;
@@ -37,7 +37,7 @@ const Merge = (StartIndex, EndIndex, MidIndex) => {
 		J: J,
 	});
 	for (let cur = StartIndex; cur <= EndIndex; cur++) {
-		let Newheights = [...heights];
+		const Newheights = [...heights];
 		Newheights[cur] = AuxilaryArray[cur - StartIndex];
 		heights = [...Newheights];
 		// console.log("update heights called from mergesort");
@@ -48,23 +48,21 @@ const Merge = (StartIndex, EndIndex, MidIndex) => {
 
 const mergeSort = (StartIndex, EndIndex) => {
 	if (EndIndex <= StartIndex) return;
-	let MidIndex = Math.floor((StartIndex + EndIndex) / 2);
+	const MidIndex = Math.floor((StartIndex + EndIndex) / 2);
 	mergeSort(StartIndex, MidIndex);
 	mergeSort(MidIndex + 1, EndIndex);
-	Merge(StartIndex, EndIndex, MidIndex);
+	merge(StartIndex, EndIndex, MidIndex);
 };
 
-function MergeSort(height, Updateheights) {
-	// console.log("merge sort called");
+function Mergesort(arrayOfHeights, updatearrayOfHeights) {
 	Ind = 0;
 	funct = (parameter, index) => {
 		setTimeout(() => {
-			Updateheights(parameter);
-		}, 50 * index);
+			updatearrayOfHeights(parameter);
+		}, 30 * index);
 	};
-	heights = [];
-	heights = [...height];
-	mergeSort(0, heights.length - 1, Updateheights);
+	heights = [...arrayOfHeights];
+	mergeSort(0, heights.length - 1);
 }
 
-export default MergeSort;
+export default Mergesort;

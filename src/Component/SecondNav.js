@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import MergeSort from "../Component/SortingAlgorithms/MergeSort";
+import mergeSort from "../Component/SortingAlgorithms/MergeSort";
+import { ArgumentContext } from "../Variable";
 
-function SecondNav(props) {
-	const [arrayOfHeights, setarrayOfHeights] = useState(props.arrayOfHeights);
-	const [IsSorting, setIsSorting] = useState(props.IsSorting);
-
-	useEffect(() => {
-		setIsSorting(props.IsSorting);
-		setarrayOfHeights(props.arrayOfHeights);
-	}, [props]);
+function SecondNav() {
+	const { arrayOfHeights, updatearrayOfHeights } = useContext(ArgumentContext);
 
 	return (
 		<div>
@@ -18,7 +13,7 @@ function SecondNav(props) {
 				<Button
 					className="font-italic m-1"
 					variant="primary"
-					onClick={props.UpdatearrayOfHeights}
+					onClick={updatearrayOfHeights}
 					style={{
 						width: `70%`,
 					}}
@@ -28,7 +23,7 @@ function SecondNav(props) {
 				<br />
 				<Button
 					className="m-1"
-					onClick={() => MergeSort(arrayOfHeights, props.UpdatearrayOfHeights)}
+					onClick={() => mergeSort(arrayOfHeights, updatearrayOfHeights)}
 				>
 					Merge Sort
 				</Button>
