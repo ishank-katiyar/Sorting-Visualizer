@@ -5,7 +5,12 @@ import mergeSort from "../Component/SortingAlgorithms/MergeSort";
 import { ArgumentContext } from "../Variable";
 
 function SecondNav() {
-	const { arrayOfHeights, updatearrayOfHeights } = useContext(ArgumentContext);
+	const {
+		arrayOfHeights,
+		updatearrayOfHeights,
+		IsSorting,
+		setIsSorting,
+	} = useContext(ArgumentContext);
 
 	return (
 		<div>
@@ -15,7 +20,7 @@ function SecondNav() {
 					variant="primary"
 					onClick={updatearrayOfHeights}
 					style={{
-						width: `70%`,
+						width: `90%`,
 					}}
 				>
 					Generate New Array
@@ -23,7 +28,13 @@ function SecondNav() {
 				<br />
 				<Button
 					className="m-1"
-					onClick={() => mergeSort(arrayOfHeights, updatearrayOfHeights)}
+					style={{
+						backgroundColor: "#E21717",
+					}}
+					onClick={() =>
+						mergeSort(arrayOfHeights, updatearrayOfHeights, setIsSorting)
+					}
+					disabled={IsSorting}
 				>
 					Merge Sort
 				</Button>

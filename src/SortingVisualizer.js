@@ -8,7 +8,7 @@ import Nav from "./Component/Nav";
 import { ArgumentContext } from "./Variable";
 
 function SortingVisualizer() {
-	const { arrayOfHeights, ContainerHeight, componenetRef } = useContext(
+	const { arrayOfHeights, ContainerProperty, componenetRef } = useContext(
 		ArgumentContext
 	);
 
@@ -23,8 +23,8 @@ function SortingVisualizer() {
 					ref={componenetRef}
 					style={{
 						transform: `rotateX(180deg)`,
-						height: `${ContainerHeight}px`,
-						marginTop: `50px`
+						height: `${ContainerProperty.Height}px`,
+						marginTop: `50px`,
 					}}
 				>
 					{arrayOfHeights.map((height, idx) => {

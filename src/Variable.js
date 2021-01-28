@@ -29,9 +29,10 @@ export const ArgumentContext = createContext();
 
 export const ArgumentProvider = (props) => {
 	const [arrayOfHeights, setarrayOfHeights] = useState([]);
-	const [ContainerHeight, setContainerHeight] = useState(
-		window.innerHeight - 240
-	);
+	const [ContainerProperty, setContainerProperty] = useState({
+		Height: window.innerHeight - 240,
+		Widht: window.innerWidth,
+	});
 	const [IsSorting, setIsSorting] = useState(false);
 	const componenetRef = useRef(null);
 
@@ -42,23 +43,32 @@ export const ArgumentProvider = (props) => {
 				return;
 			}
 			timeoutCollection.timeoutCollection.removeAll();
+			setIsSorting(false);
 			setarrayOfHeights(
 				randomArray(
 					arraySize(componenetRef.current.offsetWidth),
-					ContainerHeight
+					ContainerProperty.Height
 				)
 			);
 		},
-		[ContainerHeight]
+		[ContainerProperty]
 	);
 
 	useEffect(() => {
+		// console.log("above");
 		updatearrayOfHeights();
-		setContainerHeight(window.innerHeight - 240);
 
 		const handleResize = () => {
-			setContainerHeight(window.innerHeight - 240);
-			updatearrayOfHeights();
+			// console.log("asdf");
+			updatearrayOfHeights([]);
+			clearTimeout(window.resizeTimeout);
+			window.resizeTimeout = setTimeout(() => {
+				// console.log("inside setitmeout");
+				setContainerProperty({
+					Height: window.innerHeight - 240,
+					Width: window.innerWidth,
+				});
+			}, 100);
 		};
 
 		window.addEventListener("resize", handleResize);
@@ -66,22 +76,17 @@ export const ArgumentProvider = (props) => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [
-		ContainerHeight,
-		updatearrayOfHeights,
-		setContainerHeight,
-		componenetRef
-	]);
+	}, [updatearrayOfHeights, setContainerProperty]);
 
 	const value = {
 		arrayOfHeights,
 		setarrayOfHeights,
 		updatearrayOfHeights,
-		ContainerHeight,
-		setContainerHeight,
+		ContainerProperty,
+		setContainerProperty,
 		IsSorting,
 		setIsSorting,
-		componenetRef
+		componenetRef,
 	};
 
 	return (
@@ -90,5 +95,3 @@ export const ArgumentProvider = (props) => {
 		</ArgumentContext.Provider>
 	);
 };
-
-// export useArgumentContext = () => useContext(ArgumentContext);

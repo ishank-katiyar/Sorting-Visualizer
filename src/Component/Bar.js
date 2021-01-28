@@ -30,7 +30,8 @@ function Bar(props) {
 			<div
 				className="text-center border border-primary rounded"
 				style={{
-					backgroundColor: `#23C4ED`,
+					// backgroundColor: `#23C4ED`,
+					backgroundColor: `#38CC77`,
 					width: `${Width - 6}px`,
 					height: `${Length}px`,
 					margin: "3px",
