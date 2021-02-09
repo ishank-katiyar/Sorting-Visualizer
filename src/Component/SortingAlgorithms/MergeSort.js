@@ -1,71 +1,52 @@
-import timeoutCollection from "time-events-manager";
+export const Mergesort = (array) => {
+	const ret = [];
 
-let heights = [];
-let funct = () => {};
-let Ind = 0;
+	const N = array.length;
 
-const merge = (StartIndex, EndIndex, MidIndex) => {
-	let I = StartIndex;
-	let J = MidIndex + 1;
-	const Len = EndIndex - StartIndex + 1;
-	const AuxilaryArray = [];
-	for (let i = 0; i < Len; i++) {
-		if (I <= MidIndex && J <= EndIndex) {
-			let MN;
-			if (heights[I] <= heights[J]) {
-				MN = heights[I];
-				I++;
+	const merge = (array, startIndex, midIndex, endIndex, ret) => {
+		let I = startIndex;
+
+		let J = midIndex + 1;
+
+		while (I < endIndex && J <= endIndex) {
+			let MN = I;
+
+			if (array[J] < array[MN]) {
+				MN = J;
+			}
+
+			ret.push([[...array], [I + 1, J + 1, startIndex + 1, endIndex + 1]]);
+
+			for (let K = MN - 1; K >= I; K--) {
+				[array[K], array[K + 1]] = [array[K + 1], array[K]];
+			}
+
+			if (MN === I) {
+				I += 1;
 			} else {
-				MN = heights[J];
-				J++;
+				J += 1;
+				I += 1;
 			}
-			AuxilaryArray.push(MN);
-		} else if (I <= MidIndex) {
-			AuxilaryArray.push(heights[I]);
-			I++;
-		} else if (J <= EndIndex) {
-			AuxilaryArray.push(heights[J]);
-			J++;
 		}
-	}
-	console.assert(AuxilaryArray.length === Len, {
-		AuxilaryArray: AuxilaryArray,
-		Len: Len,
-	});
-	console.assert(I === MidIndex + 1 && J === EndIndex + 1, {
-		I: I,
-		J: J,
-	});
-	for (let cur = StartIndex; cur <= EndIndex; cur++) {
-		const Newheights = [...heights];
-		Newheights[cur] = AuxilaryArray[cur - StartIndex];
-		heights = [...Newheights];
-		Ind += 1;
-		funct(heights, Ind);
-	}
-};
-
-const mergeSort = (StartIndex, EndIndex) => {
-	if (EndIndex <= StartIndex) return;
-	const MidIndex = Math.floor((StartIndex + EndIndex) / 2);
-	mergeSort(StartIndex, MidIndex);
-	mergeSort(MidIndex + 1, EndIndex);
-	merge(StartIndex, EndIndex, MidIndex);
-};
-
-function Mergesort(arrayOfHeights, updatearrayOfHeights, setIsSorting) {
-	Ind = 0;
-	funct = (parameter, index) => {
-		setTimeout(() => {
-			updatearrayOfHeights(parameter);
-			if (timeoutCollection.timeoutCollection.getScheduled().length === 1) {
-				setIsSorting(false);
-			}
-		}, 30 * index);
 	};
-	heights = [...arrayOfHeights];
-	setIsSorting(true);
-	mergeSort(0, heights.length - 1);
-}
 
-export default Mergesort;
+	const mergesort = (array, startIndex, endIndex, ret) => {
+		if (endIndex <= startIndex) {
+			return;
+		}
+
+		const midIndex = Math.floor((startIndex + endIndex) / 2);
+
+		mergesort(array, startIndex, midIndex, ret);
+
+		mergesort(array, midIndex + 1, endIndex, ret);
+
+		merge(array, startIndex, midIndex, endIndex, ret);
+	};
+
+	mergesort(array, 0, N - 1, ret);
+
+	ret.push([[...array], []]);
+
+	return ret;
+};

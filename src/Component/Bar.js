@@ -15,32 +15,42 @@ import React, { useEffect, useState } from "react";
 // -webkit-background-clip: text;
 // -webkit-text-fill-color: transparent;
 
+const Style = {
+	margin: "3px",
+	fontSize: "10px",
+	transform: `rotate(0deg)`,
+};
+
 function Bar(props) {
 	const [Length, setLength] = useState(0);
 	const [Width, setWidth] = useState(0);
-	// turquoise
+	const [Color, setColor] = useState("#F4BE2C");
+	const [Used, setUsed] = useState(false);
 
 	useEffect(() => {
 		setLength(props.Length);
 		setWidth(props.Width);
-	}, [props]);
+		setUsed(props.Used);
+		if (Used) {
+			setColor(`#DE4839`);
+		} else {
+			setColor(`#F4BE2C`);
+		}
+	}, [props, Used]);
 
 	return (
 		<div>
 			<div
-				className="text-center border border-primary rounded"
+				className="rounded"
 				style={{
-					// backgroundColor: `#23C4ED`,
-					backgroundColor: `#38CC77`,
+					...Style,
 					width: `${Width - 6}px`,
 					height: `${Length}px`,
-					margin: "3px",
-					fontSize: "10px",
-					transform: `rotate(0deg)`,
-					verticalAlign: "10px",
+					backgroundColor: `${Color}`,
+					// transition: `all ${Length / 1000}s ease-in-out`,
 				}}
 				onClick={() => {
-					console.log(Length);
+					console.log(Length, props.index);
 				}}
 			></div>
 		</div>

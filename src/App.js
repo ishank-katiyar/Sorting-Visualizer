@@ -1,6 +1,6 @@
 import React from "react";
 import SortingVisulizer from "./SortingVisualizer";
-import { ArgumentProvider } from "./Variable";
+import { ArgumentProvider } from "./Info";
 
 function App() {
 	return (
