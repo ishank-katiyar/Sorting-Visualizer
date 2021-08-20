@@ -1,7 +1,0 @@
-magick -size 720x567 xc:white -fill \#07e312 \
-   -draw "rectangle 50,300 230,450 \
-          rectangle 250,300 430,450 \
-          rectangle 450,300 630,450" test1.png
-
-
-ffmpeg -framerate 1/5 -i file-%01d.jpg -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4
